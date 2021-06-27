@@ -1,4 +1,7 @@
 spring:
+  application:
+    name: accesscontrol
+
   h2:
     console:
       enable: true
