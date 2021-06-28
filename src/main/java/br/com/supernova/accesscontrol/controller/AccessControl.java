@@ -1,5 +1,6 @@
 package br.com.supernova.accesscontrol.controller;
 
+import br.com.supernova.accesscontrol.exception.JornadaTrabalhoException;
 import br.com.supernova.accesscontrol.model.JornadaTrabalho;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -34,19 +35,19 @@ public interface AccessControl {
             @ApiResponse(code = 200, message = "Working Hours found successfully"),
             @ApiResponse(code = 404, message = "Could not find Working Hours reported")
     })
-    public ResponseEntity<JornadaTrabalho> findWorkdayById(@PathVariable Long id);
+    public ResponseEntity<JornadaTrabalho> findWorkdayById(@PathVariable Long id) throws JornadaTrabalhoException;
 
     @ApiOperation(value = "Updating of registration data of a successful Working Hours")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Working Hours data updated successfully"),
             @ApiResponse(code = 404, message = "The Working Hours could not be found to update the data")
     })
-    public ResponseEntity<JornadaTrabalho> updateWorkdayForget(@PathVariable Long id, @Valid @RequestBody JornadaTrabalho jornada);
+    public ResponseEntity<JornadaTrabalho> updateWorkdayForget(@PathVariable Long id, @Valid @RequestBody JornadaTrabalho jornada) throws JornadaTrabalhoException;
 
     @ApiOperation(value = "Operation to exclude Working Hours")
     @ApiResponses(value = {
             @ApiResponse(code = 204, message = "Working Hours registration successfully deleted"),
             @ApiResponse(code = 404, message = "Could not find the Working Hours registration for deletion")
     })
-    public ResponseEntity<Map<String, Boolean>> deleteById(@PathVariable Long id);
+    public ResponseEntity<Map<String, Boolean>> deleteById(@PathVariable Long id) throws JornadaTrabalhoException;
 }
