@@ -1,6 +1,7 @@
 package br.com.supernova.accesscontrol.model;
 
 import lombok.*;
+import org.hibernate.envers.Audited;
 
 import javax.persistence.Embeddable;
 import javax.persistence.Entity;
@@ -14,6 +15,7 @@ import java.time.LocalDateTime;
 @Data
 @Builder
 @Entity
+@Audited
 public class Movimentacao {
 
     @NoArgsConstructor
