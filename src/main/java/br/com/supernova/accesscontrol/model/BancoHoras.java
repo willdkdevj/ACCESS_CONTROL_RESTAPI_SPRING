@@ -3,6 +3,7 @@ package br.com.supernova.accesscontrol.model;
 import lombok.*;
 
 import javax.persistence.Embeddable;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -25,6 +26,7 @@ public class BancoHoras {
         private Long usuarioID;
     }
 
+    @EmbeddedId
     private BancoHorasID bancoHorasID;
     private LocalDateTime dataTabalhada;
     private BigDecimal quantidadeHoras;

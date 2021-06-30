@@ -16,14 +16,14 @@ public class AccessControlService {
 
     private final AccessControlRepository repository;
 
-    public JornadaTrabalho registerWorkday(JornadaTrabalho jornada) {
-        JornadaTrabalho savedJornada = repository.save(jornada);
-        return savedJornada;
-    }
-
     public JornadaTrabalho findByWorkday(Long id) throws JornadaTrabalhoException {
         JornadaTrabalho jornadaTrabalho = repository.findById(id).orElseThrow(() -> new JornadaTrabalhoException(id));
         return jornadaTrabalho;
+    }
+
+    public JornadaTrabalho registerWorkday(JornadaTrabalho jornada){
+        JornadaTrabalho savedWorkday = repository.save(jornada);
+        return savedWorkday;
     }
 
     public List<JornadaTrabalho> returnAllWorkday(){

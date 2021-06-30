@@ -42,13 +42,15 @@ public class AccessControlImpl implements AccessControl{
     }
 
     @Override
-    @PutMapping("/{id}")
+    @PutMapping("/up/{id}")
     public ResponseEntity<JornadaTrabalho> updateWorkdayForget(@PathVariable Long id, @Valid @RequestBody JornadaTrabalho jornada) throws JornadaTrabalhoException {
         JornadaTrabalho updateWorkday = service.updateById(id, jornada);
         return ResponseEntity.ok().body(updateWorkday);
     }
 
     @Override
+    @DeleteMapping("/del/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Map<String, Boolean>> deleteById(@PathVariable Long id) throws JornadaTrabalhoException {
         Map<String, Boolean> map = service.deleteById(id);
         return ResponseEntity.ok().body(map);
