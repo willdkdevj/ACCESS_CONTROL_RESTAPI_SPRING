@@ -49,5 +49,5 @@ public interface NivelAcessoInt {
             @ApiResponse(code = 204, message = "Access Level registration successfully deleted"),
             @ApiResponse(code = 404, message = "Could not find the Access Level registration for deletion")
     })
-    public ResponseEntity<Map<String, Boolean>> deleteById(@PathVariable Long id) throws NivelAcessoException;
+    public ResponseEntity<Map<String, Boolean>> deleteByLevelId(@PathVariable Long id) throws NivelAcessoException;
 }

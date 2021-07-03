@@ -50,5 +50,5 @@ public interface CategoriaUsuarioInt {
             @ApiResponse(code = 204, message = "Category User registration successfully deleted"),
             @ApiResponse(code = 404, message = "Could not find the Category User registration for deletion")
     })
-    public ResponseEntity<Map<String, Boolean>> deleteById(@PathVariable Long id) throws CategoriaUsuarioException, JornadaTrabalhoException;
+    public ResponseEntity<Map<String, Boolean>> deleteByCategoryId(@PathVariable Long id) throws CategoriaUsuarioException, JornadaTrabalhoException;
 }

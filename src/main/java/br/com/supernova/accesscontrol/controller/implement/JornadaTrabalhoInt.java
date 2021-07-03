@@ -1,6 +1,9 @@
 package br.com.supernova.accesscontrol.controller.implement;
 
+import br.com.supernova.accesscontrol.exception.CategoriaUsuarioException;
 import br.com.supernova.accesscontrol.exception.JornadaTrabalhoException;
+import br.com.supernova.accesscontrol.exception.NivelAcessoException;
+import br.com.supernova.accesscontrol.exception.TipoDataException;
 import br.com.supernova.accesscontrol.model.JornadaTrabalho;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -35,7 +38,7 @@ public interface JornadaTrabalhoInt {
             @ApiResponse(code = 200, message = "Working Hours found successfully"),
             @ApiResponse(code = 404, message = "Could not find Working Hours reported")
     })
-    public ResponseEntity<JornadaTrabalho> findWorkdayById(@PathVariable Long id) throws JornadaTrabalhoException;
+    public ResponseEntity<JornadaTrabalho> findWorkdayById(@PathVariable Long id) throws JornadaTrabalhoException, CategoriaUsuarioException, NivelAcessoException, TipoDataException, Exception;
 
     @ApiOperation(value = "Updating of registration data of a successful Working Hours")
     @ApiResponses(value = {

@@ -49,5 +49,5 @@ public interface TipoDataInt {
             @ApiResponse(code = 204, message = "Date Type registration successfully deleted"),
             @ApiResponse(code = 404, message = "Could not find the Date Type registration for deletion")
     })
-    public ResponseEntity<Map<String, Boolean>> deleteById(@PathVariable Long id) throws TipoDataException;
+    public ResponseEntity<Map<String, Boolean>> deleteByTypeId(@PathVariable Long id) throws TipoDataException;
 }
