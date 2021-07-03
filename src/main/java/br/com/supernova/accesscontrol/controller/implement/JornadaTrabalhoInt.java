@@ -1,4 +1,4 @@
-package br.com.supernova.accesscontrol.controller;
+package br.com.supernova.accesscontrol.controller.implement;
 
 import br.com.supernova.accesscontrol.exception.JornadaTrabalhoException;
 import br.com.supernova.accesscontrol.model.JornadaTrabalho;
@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 @Api("Interface to abstract Controller layer methods ")
-public interface AccessControl {
+public interface JornadaTrabalhoInt {
 
     @ApiOperation(value = "Operation to list Working Hours in management")
     @ApiResponses(value = {
