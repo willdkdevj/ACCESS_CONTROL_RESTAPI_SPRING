@@ -1,6 +1,7 @@
 package br.com.supernova.accesscontrol.controller.implement;
 
 import br.com.supernova.accesscontrol.exception.CategoriaUsuarioException;
+import br.com.supernova.accesscontrol.exception.JornadaTrabalhoException;
 import br.com.supernova.accesscontrol.model.CategoriaUsuario;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -49,5 +50,5 @@ public interface CategoriaUsuarioInt {
             @ApiResponse(code = 204, message = "Category User registration successfully deleted"),
             @ApiResponse(code = 404, message = "Could not find the Category User registration for deletion")
     })
-    public ResponseEntity<Map<String, Boolean>> deleteById(@PathVariable Long id) throws CategoriaUsuarioException;
+    public ResponseEntity<Map<String, Boolean>> deleteById(@PathVariable Long id) throws CategoriaUsuarioException, JornadaTrabalhoException;
 }

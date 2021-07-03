@@ -1,7 +1,11 @@
 package br.com.supernova.accesscontrol.controller;
 
+import br.com.supernova.accesscontrol.controller.implement.CategoriaUsuarioInt;
 import br.com.supernova.accesscontrol.controller.implement.JornadaTrabalhoInt;
+import br.com.supernova.accesscontrol.exception.CategoriaUsuarioException;
 import br.com.supernova.accesscontrol.exception.JornadaTrabalhoException;
+import br.com.supernova.accesscontrol.model.CategoriaUsuario;
+import br.com.supernova.accesscontrol.model.JornadaTrabalho;
 import br.com.supernova.accesscontrol.service.AccessControlService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -15,37 +19,30 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/v1/workday")
 @RequiredArgsConstructor
-public class AccessControlImpl implements JornadaTrabalhoInt {
+public class AccessControlImpl implements JornadaTrabalhoInt, CategoriaUsuarioInt {
 
     private final AccessControlService service;
 
     @Override
     @GetMapping("/all")
-    public ResponseEntity<List<br.com.supernova.accesscontrol.model.JornadaTrabalho>> returnWorkdayList() {
-        List<br.com.supernova.accesscontrol.model.JornadaTrabalho> allWorkday = service.returnAllWorkday();
+    public ResponseEntity<List<JornadaTrabalho>> returnWorkdayList() {
+        List<JornadaTrabalho> allWorkday = service.returnAllWorkday();
         return ResponseEntity.ok().body(allWorkday);
     }
 
     @Override
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<br.com.supernova.accesscontrol.model.JornadaTrabalho> createWorkday(@Valid @RequestBody br.com.supernova.accesscontrol.model.JornadaTrabalho jornada) {
-        br.com.supernova.accesscontrol.model.JornadaTrabalho workday = service.registerWorkday(jornada);
+    public ResponseEntity<JornadaTrabalho> createWorkday(@Valid @RequestBody JornadaTrabalho jornada) {
+        JornadaTrabalho workday = service.registerWorkday(jornada);
         return ResponseEntity.ok().body(workday);
     }
 
     @Override
     @GetMapping("/{id}")
-    public ResponseEntity<br.com.supernova.accesscontrol.model.JornadaTrabalho> findWorkdayById(@PathVariable Long id) throws JornadaTrabalhoException {
-        br.com.supernova.accesscontrol.model.JornadaTrabalho byWorkday = service.findByWorkday(id);
+    public ResponseEntity<JornadaTrabalho> findWorkdayById(@PathVariable Long id) throws JornadaTrabalhoException {
+        JornadaTrabalho byWorkday = service.findByWorkday(id);
         return ResponseEntity.ok().body(byWorkday);
-    }
-
-    @Override
-    @PutMapping("/up/{id}")
-    public ResponseEntity<br.com.supernova.accesscontrol.model.JornadaTrabalho> updateWorkdayForget(@PathVariable Long id, @Valid @RequestBody br.com.supernova.accesscontrol.model.JornadaTrabalho jornada) throws JornadaTrabalhoException {
-        br.com.supernova.accesscontrol.model.JornadaTrabalho updateWorkday = service.updateById(id, jornada);
-        return ResponseEntity.ok().body(updateWorkday);
     }
 
     @Override
@@ -55,4 +52,33 @@ public class AccessControlImpl implements JornadaTrabalhoInt {
         Map<String, Boolean> map = service.deleteById(id);
         return ResponseEntity.ok().body(map);
     }
+
+    @Override
+    @PutMapping("/up/{id}")
+    public ResponseEntity<JornadaTrabalho> updateWorkdayForget(@PathVariable Long id, @Valid @RequestBody JornadaTrabalho jornada) throws JornadaTrabalhoException {
+        JornadaTrabalho updateWorkday = service.updateById(id, jornada);
+        return ResponseEntity.ok().body(updateWorkday);
+    }
+
+    @Override
+    public ResponseEntity<List<CategoriaUsuario>> returnCategoryUserList() {
+        return null;
+    }
+
+    @Override
+    public ResponseEntity<CategoriaUsuario> createCategoryUser(@Valid CategoriaUsuario categoria) {
+        return null;
+    }
+
+    @Override
+    public ResponseEntity<CategoriaUsuario> findCategoryUserById(Long id) throws CategoriaUsuarioException {
+        return null;
+    }
+
+    @Override
+    public ResponseEntity<CategoriaUsuario> updateCategoryUserForget(Long id, @Valid CategoriaUsuario categoria) throws CategoriaUsuarioException {
+        return null;
+    }
+
+
 }

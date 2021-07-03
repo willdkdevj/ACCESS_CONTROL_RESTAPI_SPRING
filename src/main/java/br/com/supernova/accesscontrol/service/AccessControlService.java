@@ -2,7 +2,7 @@ package br.com.supernova.accesscontrol.service;
 
 import br.com.supernova.accesscontrol.exception.JornadaTrabalhoException;
 import br.com.supernova.accesscontrol.model.JornadaTrabalho;
-import br.com.supernova.accesscontrol.repository.AccessControlRepository;
+import br.com.supernova.accesscontrol.repository.JornadaTrabalhoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +14,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class AccessControlService {
 
-    private final AccessControlRepository repository;
+    private final JornadaTrabalhoRepository repository;
 
     public JornadaTrabalho findByWorkday(Long id) throws JornadaTrabalhoException {
         JornadaTrabalho jornadaTrabalho = repository.findById(id).orElseThrow(() -> new JornadaTrabalhoException(id));
