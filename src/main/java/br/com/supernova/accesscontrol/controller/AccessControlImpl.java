@@ -4,10 +4,6 @@ import br.com.supernova.accesscontrol.controller.implement.CategoriaUsuarioInt;
 import br.com.supernova.accesscontrol.controller.implement.JornadaTrabalhoInt;
 import br.com.supernova.accesscontrol.controller.implement.NivelAcessoInt;
 import br.com.supernova.accesscontrol.controller.implement.TipoDataInt;
-import br.com.supernova.accesscontrol.exception.CategoriaUsuarioException;
-import br.com.supernova.accesscontrol.exception.JornadaTrabalhoException;
-import br.com.supernova.accesscontrol.exception.NivelAcessoException;
-import br.com.supernova.accesscontrol.exception.TipoDataException;
 import br.com.supernova.accesscontrol.model.CategoriaUsuario;
 import br.com.supernova.accesscontrol.model.JornadaTrabalho;
 import br.com.supernova.accesscontrol.model.NivelAcesso;
@@ -104,7 +100,7 @@ public class AccessControlImpl implements JornadaTrabalhoInt, CategoriaUsuarioIn
 
     @SneakyThrows
     @Override
-    @PutMapping("level/up/{id}")
+    @PutMapping("category/up/{id}")
     public ResponseEntity<CategoriaUsuario> updateCategoryUserForget(@PathVariable Long id, @Valid @RequestBody CategoriaUsuario categoria) {
         CategoriaUsuario updatedCategory = (CategoriaUsuario) service.updateByObjectId(id, categoria);
         return ResponseEntity.ok().body(updatedCategory);

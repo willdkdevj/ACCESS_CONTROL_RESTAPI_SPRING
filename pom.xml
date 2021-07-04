@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>br.com.supernova</groupId>
 	<artifactId>access-control</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.0</version>
 	<name>access-control</name>
 	<description>REST API that manages the access control to employee data of a company by validating their access level and professional category</description>
 	<properties>
@@ -48,11 +48,6 @@
 			<version>1.6.2</version>
 		</dependency>
 
-		<!--<dependency>
-			<groupId>com.h2database</groupId>
-			<artifactId>h2</artifactId>
-			<scope>runtime</scope>
-		</dependency> -->
 		<!-- https://mvnrepository.com/artifact/com.h2database/h2 -->
 		<dependency>
 			<groupId>com.h2database</groupId>
