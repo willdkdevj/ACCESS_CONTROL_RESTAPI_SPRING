@@ -1,5 +1,5 @@
-## API REST para o Controle de Acesso a Usuários
-> O projeto consiste na criação de uma API REST utilizando o recurso de auditoria do JPA através do Hibernate Envers, na qual monitorará ações realizadas em um Sistema de Controle de Acesso a Funcionários a fim de checar os responsáveis, informações, data e horário que ocorreram acessos a base de dados a fim de assegurar a integridade do dados presentes no banco de dados relacional.
+## API REST para o Controle de Acesso a Funcionários
+> O projeto consiste na criação de uma API REST utilizando o recurso de auditoria do JPA através do Hibernate Envers, na qual monitorará ações realizadas em um Sistema de Controle de Acesso a Funcionários.
 
 [![Spring Badge](https://img.shields.io/badge/-Spring-brightgreen?style=flat-square&logo=Spring&logoColor=white&link=https://spring.io/)](https://spring.io/)
 [![Maven Badge](https://img.shields.io/badge/-Maven-000?style=flat-square&logo=Apache-Maven&logoColor=white&link=https://maven.apache.org/)](https://maven.apache.org/)
@@ -119,7 +119,51 @@ server:
 ```
 
 ## Como Auditar uma Entidade
+Para utilizar o Envers, assim como é feito com o JPA na API, é utilizado anotações no código, na qual definirá o mapeamento Objeto Relacional da Entidade, onde se repete o processo com o Envers, definindo a Entidade  que passará por auditoria.
 
+Na organização do projeto, foi utilizado o conceito do Spring MVC, para definir as camadas da aplicação, sendo assim, as Entidades estão no pacote **Model** [br.com.supernova.accesscontrol.model].
+
+Outra observação importante, é que se você for auditar uma tabela que é uma tabela **PAI** (referência primária) de outra tabela, as tabelas **FILHAS** também deverão ser auditadas, visto que, os registros que serão atribuídos na Pai, fazem referência as filhas. Desta forma, para informarmos para o Hibernate que auditaremos uma Entidade utilizamos a anotação **@Audited**, como é apresentado na classe *JornadaTrabalho*.
+```java
+@Entity
+@Audited
+public class JornadaTrabalho {
+
+    @Id
+    @GeneratedValue
+    private Long id;
+
+    private String descricao;
+}
+```
+No projeto, estamos auditando a tabela **Usuario**, mas como ela faz referencia a outras tabela auxiliares (Filhas) também estamos auditando estas tabelas, desta maneira, todas utilizam a anotação *@Audited* para que o Envers faça o processo de auditoria.
+
+A anotação principal referente ao Hibernate Envers e que indica que a Entidade e suas propriedades passarão por auditoria é a **@Audited**. Poderiamos utilizar a anotação **@AuditTable**, a fim de atribuir um nome a tabela que será criada para armazenar todas as alterações sofridas pela Entidade auditada, mas deixarei que o próprio Hibernate nomeie a tabela para interagir o menos possível com o banco de dados. Desta forma, o framework criará uma nomenclatura seguindo um padrão, que consiste do nome da Entidade auditada com o sufixo **_AUD**. 
+
+A partir de agora, toda aplicação está configurada e em estado funcional. No entanto, falta atender aos requisitos propostos no que tange a possibilidade de customizar informações, ao adicionar atributos junto à estrutura de auditoria do Hibernate Envers para obter o maior número de evidências sobre um registro. Conforme mencionado anteriormente, além das informações *default*, foi inserido mais duas outras informações a serem registradas: o **Usuário** e o **Endereço IP**.
+
+Para isso, foi implementado o recurso de escuta de revisão do framework e criada uma classe que representará a entidade de revisão do projeto, sendo responsável por mapear todos os dados armazenados no momento da criação de uma nova revisão. Desta forma, foi criada a classe **AuditEntity** na qual é mapeada como uma entidade JPA, através da anotation @Entity. Além disso, foi feita a alteração do nome da tabela central de auditoria do Envers, que, por padrão, o Envers atribuí o nome de **REVINFO**. Mas foi nomeada para **REVINFO_CUSTOM**. Outro fator importante, é a anotação @RevisionEntity, que indica ao Envers que essa é uma entidade de revisão e que será usada para armazenar o histórico das revisões. onde é feita menção a classe AuditListener, que executará a função de **interceptor** da classe RevisionListener e implementará o comportamento customizado que será utilizado no momento da criação da tabela de auditoria.
+
+Pronto! A partir de agora o Hibernate realizará a gerencia dos registros, tanto da tabela auditada, quanto a de histórico de modificações. Desta forma, ao executar o projeto o Hibernate constroí as tabelas com os seus devidos relacionamentos, conforme especificamos com as anotações JPA e Envers e podemos analisar sua saída devido ao parâmetro que setamos ao *show-sql* em application.yaml.
+
+![Framework Project - show-sql](https://github.com/willdkdevj/assets/blob/main/Spring/access-control/hibernate-show.png)
+
+Por fim, ao acessar o console do H2 conseguimos ver a estrutura de tabelas montadas na database. Note que toda a classe anotada com @Audited tem uma tabela de mesmo nome, com uma segunda tabela com o sufixo _AUD. Isto mostra que o Hibernate Envers funcionou corretamente e que tomará conta dos registros que serão inclusos a partir de agora.
+
+![Framework Project - databaseH2](https://github.com/willdkdevj/assets/blob/main/Spring/access-control/swagger-doc.png)
+
+Para concluir utilizarei o **Insomnia** para enviar uma requisição do tipo **POST** para a API, a fim de gerar um registro na tabela JornadaTrabalho e verificar como este registro é persistido na database. 
+
+![Framework Project - requestPost](https://github.com/willdkdevj/assets/blob/main/Spring/access-control/request_workday.png)
+
+Para concluir ao realizar uma consulta (*SELECT*) em ambas as tabelas temos a seguinte saída:
+
+![Framework Project - requestPost](https://github.com/willdkdevj/assets/blob/main/Spring/access-control/request_workday.png)
+
+### Conclusão do Uso do Hibernate Envers
+A partir desse estudo é possível notar que as principais características fornecidas pelo Hibernate Envers, é o ganho na produtividade na construção de uma aplicação robusta e funcional, tanto na estrutura da database, como na integração com a aplicação, outro ponto observado foi a redução de tempo empregado na manutenção, além de ser extremamente simples de implementar. Visto que, caso fosse realizado a implementação manual dessa estrutura, levariasse muito tempo para elaborar e implementar todo o código necessário para o seu funcionamento.
+
+Além disso, o framework nos permite personalizar atributos de segurança, como quem, onde e quando foi realizado a estrutura de uma tabela auditada, nos fornecendo evidências robustas sobre o seu manuseio.
 
 ## Como Está Documentado o Projeto
 O framework ``Swagger UI`` auxilia na criação da documentação do projeto, por possuir uma variedade de ferramentas que permite modelar a descrição, consumo e visualização de serviços da API REST. No projeto foi incluída suas dependências (Swagger-UI, Swagger-Core) para habilitá-lo para uso na aplicação, desta forma, no *snippet* abaixo é apresentado o Bean principal para sua configuração, presente na classe SwaggerConfig.
