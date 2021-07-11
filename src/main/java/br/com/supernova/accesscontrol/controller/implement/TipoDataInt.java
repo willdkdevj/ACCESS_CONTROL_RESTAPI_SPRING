@@ -10,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
@@ -28,14 +30,18 @@ public interface TipoDataInt {
             @ApiResponse(code = 201, message = "Date Type successfully registered"),
             @ApiResponse(code = 400, message = "It was not possible to register the informed Date Type")
     })
-    public ResponseEntity<TipoData> createDateType(@Valid @RequestBody TipoData tipo);
+    public ResponseEntity<TipoData> createDateType(@Valid @RequestBody TipoData tipo,
+                                                   HttpServletRequest request,
+                                                   HttpServletResponse response);
 
     @ApiOperation(value = "Operation to locate Date Type")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Date Type found successfully"),
             @ApiResponse(code = 404, message = "Could not find Date Type reported")
     })
-    public ResponseEntity<TipoData> findDateTypeById(@PathVariable Long id) throws TipoDataException;
+    public ResponseEntity<TipoData> findDateTypeById(@PathVariable Long id,
+                                                     HttpServletRequest request,
+                                                     HttpServletResponse response) throws TipoDataException;
 
     @ApiOperation(value = "Updating of registration data of a successful Date Type")
     @ApiResponses(value = {

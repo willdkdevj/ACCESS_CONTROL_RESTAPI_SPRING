@@ -1,5 +1,7 @@
 package br.com.supernova.accesscontrol.controller;
 
+import br.com.supernova.accesscontrol.audit.AuditEntity;
+import br.com.supernova.accesscontrol.audit.AuditListener;
 import br.com.supernova.accesscontrol.controller.implement.CategoriaUsuarioInt;
 import br.com.supernova.accesscontrol.controller.implement.JornadaTrabalhoInt;
 import br.com.supernova.accesscontrol.controller.implement.NivelAcessoInt;
@@ -15,6 +17,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
@@ -154,17 +158,23 @@ public class AccessControlImpl implements JornadaTrabalhoInt, CategoriaUsuarioIn
     }
 
     @Override
-    @PostMapping("datetype")
+    //@PostMapping("datetype")
+    @RequestMapping(value = "datetype", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<TipoData> createDateType(@Valid TipoData tipo) {
+    public ResponseEntity<TipoData> createDateType(@Valid TipoData tipo,
+                                                   HttpServletRequest request,
+                                                   HttpServletResponse response) {
         TipoData dateType = (TipoData) service.registerObject(tipo);
         return ResponseEntity.ok().body(dateType);
     }
 
     @SneakyThrows
     @Override
-    @GetMapping("datetype/{id}")
-    public ResponseEntity<TipoData> findDateTypeById(Long id) {
+    //@GetMapping("datetype/{id}")
+    @RequestMapping(value = "datetype/{id}", method = RequestMethod.GET)
+    public ResponseEntity<TipoData> findDateTypeById(@PathVariable Long id,
+                                                     HttpServletRequest request,
+                                                     HttpServletResponse response) {
         TipoData byType = (TipoData) service.findByObject(id, new TipoData());
         return ResponseEntity.ok().body(byType);
     }
@@ -179,11 +189,23 @@ public class AccessControlImpl implements JornadaTrabalhoInt, CategoriaUsuarioIn
 
     @SneakyThrows
     @Override
-    @DeleteMapping("datetype/del/{id}")
+    @DeleteMapping(value = "datetype/del/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Map<String, Boolean>> deleteByTypeId(Long id) {
         Map<String, Boolean> map = service.deleteByObjectId(id, new TipoData());
         return ResponseEntity.ok().body(map);
     }
 
+    /*
+    private void getContact(HttpServletRequest request) {
+        String ipAddress = request.getHeader("X-FORWARDED-FOR");
+        String username = request.getHeader("X-FORWARDED-FOR");
+
+        ipAddress = (ipAddress == null) ? request.getRemoteAddr() : "anônimo";
+        username = (username == null) ? request.getRemoteUser() : "anônimo";
+
+        auditListener.set;
+    }
+
+     */
 }

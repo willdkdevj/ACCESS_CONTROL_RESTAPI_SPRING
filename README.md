@@ -140,9 +140,23 @@ No projeto, estamos auditando a tabela **Usuario**, mas como ela faz referencia 
 
 A anotação principal referente ao Hibernate Envers e que indica que a Entidade e suas propriedades passarão por auditoria é a **@Audited**. Poderiamos utilizar a anotação **@AuditTable**, a fim de atribuir um nome a tabela que será criada para armazenar todas as alterações sofridas pela Entidade auditada, mas deixarei que o próprio Hibernate nomeie a tabela para interagir o menos possível com o banco de dados. Desta forma, o framework criará uma nomenclatura seguindo um padrão, que consiste do nome da Entidade auditada com o sufixo **_AUD**. 
 
+### Atribuir Parâmetros Personalizados
 A partir de agora, toda aplicação está configurada e em estado funcional. No entanto, falta atender aos requisitos propostos no que tange a possibilidade de customizar informações, ao adicionar atributos junto à estrutura de auditoria do Hibernate Envers para obter o maior número de evidências sobre um registro. Conforme mencionado anteriormente, além das informações *default*, foi inserido mais duas outras informações a serem registradas: o **Usuário** e o **Endereço IP**.
 
-Para isso, foi implementado o recurso de escuta de revisão do framework e criada uma classe que representará a entidade de revisão do projeto, sendo responsável por mapear todos os dados armazenados no momento da criação de uma nova revisão. Desta forma, foi criada a classe **AuditEntity** na qual é mapeada como uma entidade JPA, através da anotation @Entity. Além disso, foi feita a alteração do nome da tabela central de auditoria do Envers, que, por padrão, o Envers atribuí o nome de **REVINFO**. Mas foi nomeada para **REVINFO_CUSTOM**. Outro fator importante, é a anotação @RevisionEntity, que indica ao Envers que essa é uma entidade de revisão e que será usada para armazenar o histórico das revisões. onde é feita menção a classe AuditListener, que executará a função de **interceptor** da classe RevisionListener e implementará o comportamento customizado que será utilizado no momento da criação da tabela de auditoria.
+Para isso, foi implementado o recurso de escuta de revisão do framework e criada uma classe que representará a entidade de revisão do projeto, sendo responsável por mapear todos os dados armazenados no momento da criação de uma nova revisão. Desta forma, foi criada a classe **AuditEntity** na qual é mapeada como uma entidade JPA, através da anotation @Entity. Além disso, foi feita a alteração do nome da tabela central de auditoria do Envers, que, por padrão, o Envers atribuí o nome de **REVINFO**. Mas foi nomeada para **REVINFO_CUSTOM**. O [ENVERS] trata essas informações como se fosse uma entidade, utilizando recursos de sua própria classe para isso, mapeando para a tabela.
+
+É necessário informar o **Envers** sobre a entidade que vamos auditar, desta forma, se faz necessário anotar a classe com *@RevisionEntity* atribuindo os atributos **RevisionNumber** e **RevisionTimestamp**, mas foi possivel abstrair estes atributos ao estender a classe **DefaultRevisionEntity**, para herdar todos esses comportamentos necessários.
+```java
+@Entity(name = "AuditEntity")
+@Table(name = "REVINFO_CUSTOM")
+@RevisionEntity(AuditListener.class)
+public class AuditEntity extends DefaultRevisionEntity {
+    private String usuario;
+    private String ip;
+}
+```
+
+Outro fator importante, é a anotação @RevisionEntity, que indica ao Envers que essa é uma entidade de revisão e que será usada para armazenar o histórico das revisões. onde é feita menção a classe AuditListener, que executará a função de **interceptor** da classe RevisionListener e implementará o comportamento customizado que será utilizado no momento da criação da tabela de auditoria.
 
 Pronto! A partir de agora o Hibernate realizará a gerencia dos registros, tanto da tabela auditada, quanto a de histórico de modificações. Desta forma, ao executar o projeto o Hibernate constroí as tabelas com os seus devidos relacionamentos, conforme especificamos com as anotações JPA e Envers e podemos analisar sua saída devido ao parâmetro que setamos ao *show-sql* em application.yaml.
 
