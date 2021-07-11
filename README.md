@@ -172,7 +172,7 @@ Para concluir utilizarei o **Insomnia** para enviar uma requisição do tipo **P
 
 Para concluir ao realizar uma consulta (*SELECT*) em ambas as tabelas temos a seguinte saída:
 
-![Framework Project - requestPost](https://github.com/willdkdevj/assets/blob/main/Spring/access-control/request_workday.png)
+![Framework Project - requestPost](https://github.com/willdkdevj/assets/blob/main/Spring/access-control/select_workday.png)
 
 ### Conclusão do Uso do Hibernate Envers
 A partir desse estudo é possível notar que as principais características fornecidas pelo Hibernate Envers, é o ganho na produtividade na construção de uma aplicação robusta e funcional, tanto na estrutura da database, como na integração com a aplicação, outro ponto observado foi a redução de tempo empregado na manutenção, além de ser extremamente simples de implementar. Visto que, caso fosse realizado a implementação manual dessa estrutura, levariasse muito tempo para elaborar e implementar todo o código necessário para o seu funcionamento.
